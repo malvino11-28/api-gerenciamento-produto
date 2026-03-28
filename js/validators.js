@@ -1,5 +1,3 @@
-import test from "node:test";
-
 let padrao;
 
 export function validarValor(valor) {

@@ -8,27 +8,39 @@
   <body>
     <h1>CADASTRO DE PRODUTOS</h1>
 
-    <form action="http://localhost:3000/produtos" method="POST" id="form">
+    <form id="form">
       <div>
         <label for="produto">Nome do produto</label>
         <input type="text" name="nome" id="produto" />
+        <small id="msgNom" style="display: none"
+          >O nome não pode estar vazio!</small
+        >
       </div>
       <div>
         <label for="descricao">Descrição do produto</label>
         <input type="text" name="descricao" id="descProd" />
+        <small id="msgDesc" style="display: none"
+          >A descrição não pode estar vazia!</small
+        >
       </div>
       <div>
         <label for="valor">Valor do produto</label>
-        <input type="number" name="valor" id="valorProd" />
+        <input type="text" name="valor" id="valorProd" />
+        <small id="msgV" style="display: none">Digite um valor decimal</small>
       </div>
       <div>
         <label for="qtd">Quantidade em estoque</label>
         <input type="number" name="quantidade" id="qtdProd" />
+        <small id="msgQTD" style="display: none"
+          >Digite a quantidade com números inteiros</small
+        >
       </div>
 
       <div>
         <button type="submit">CADASTRAR</button>
       </div>
     </form>
+    <a href="http://localhost:3000/produtos">Ver produtos</a>
+    <script type="module" src="./js/script.js"></script>
   </body>
 </html>
