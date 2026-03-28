@@ -1,7 +1,7 @@
 let padrao;
 
 export function validarValor(valor) {
-  padrao = /^\d+(\.\d+)?$/;
+  padrao = /(\.\d+)/;
   return padrao.test(valor);
 }
 

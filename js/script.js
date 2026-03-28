@@ -1,6 +1,8 @@
 import * as validadores from "./validators.js";
 import * as msg from "./ui.js";
 
+const html = document.getElementById("div");
+
 const form = document.getElementById("form");
 const valor = document.getElementById("valorProd");
 const quantidade = document.getElementById("qtdProd");
@@ -10,6 +12,9 @@ form.addEventListener("submit", (event) => {
 
   if (validarFormulario()) {
     cadastrar();
+    html.innerHTML = "<h2>Cadastro realizado!</h2>";
+  } else {
+    html.innerHTML = "<h2>Cadastro falhou!</h2>";
   }
 });
 
@@ -26,15 +31,22 @@ const cadastrar = async () => {
   const produto = {
     nome: document.getElementById("produto").value,
     descricao: document.getElementById("descProd").value,
-    valor: document.getElementById("valorProd").value,
-    quantidade: document.getElementById("qtdProd").value,
+    valor: parseFloat(document.getElementById("valorProd").value),
+    quantidade: parseInt(document.getElementById("qtdProd").value),
   };
 
-  await fetch("http://localhost:3000/produtos", {
-    method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify(produto),
-  });
+  try {
+    const res = await fetch("http://localhost:3000/produtos", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(produto),
+    });
+    if (res.ok) {
+      form.reset();
+    }
+  } catch (error) {
+    console.error("Erro de rede:", error);
+  }
 };
 
 quantidade.addEventListener("blur", () => {
@@ -53,8 +65,8 @@ function validarFormulario() {
   const vDescricao = document.getElementById("descProd").value;
   const vNome = document.getElementById("produto").value;
 
-  const nomeValido = vNome !== "";
-  const descValida = vDescricao !== "";
+  const nomeValido = vNome.trim() !== "";
+  const descValida = vDescricao.trim() !== "";
   const qtdValido = validadores.validarQTD(vQTD);
   const valorValido = validadores.validarValor(vValor);
 

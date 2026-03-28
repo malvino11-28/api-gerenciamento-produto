@@ -1,6 +1,8 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 let id = 1;
@@ -16,17 +18,46 @@ app.post("/produtos", (req, res) => {
     valor,
     quantidade,
   };
-
   produtos.push(novoProd);
   res.status(201).json(novoProd);
 });
 
 app.get("/produtos", (req, res) => {
-  res.status(200).json(produtos);
+  let linhasTabela = produtos
+    .map(
+      (p) => `
+    <tr>
+      <td>${p.id}</td>
+      <td>${p.nome}</td>
+      <td>${p.descricao}</td>
+      <td>R$ ${p.valor}</td>
+      <td>${p.quantidade}</td>
+    </tr>
+  `,
+    )
+    .join("");
+
+  let html = `
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${linhasTabela}
+      </tbody>
+    </table>`;
+
+  res.status(200).send(html);
 });
 
 app.put("/produtos/:id", (req, res) => {
-  const { id } = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
   const { nome, descricao, valor, quantidade } = req.body;
 
   const busca = produtos.findIndex((p) => p.id === id);
