@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>CADASTRO DE PRODUTOS</h1>
+
+    <form action="http://localhost:3000/produtos" method="POST">
+      <div>
+        <label for="produto">Nome do produto</label>
+        <input type="text" name="produto" id="produto" />
+      </div>
+      <div>
+        <label for="descricao">Descrição do produto</label>
+        <input type="textarea" name="descricao" id="descProd" />
+      </div>
+      <div>
+        <label for="valor">Valor do produto</label>
+        <input type="number" name="valor" id="valorProd" />
+      </div>
+      <div>
+        <label for="qtd">Quantidade em estoque</label>
+        <input type="number" name="qtd" id="qtdProd" />
+      </div>
+
+      <div>
+        <button type="submit">CADASTRAR</button>
+      </div>
+    </form>
+  </body>
+</html>

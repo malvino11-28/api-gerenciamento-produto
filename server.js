@@ -3,11 +3,22 @@ import express from "express";
 const app = express();
 app.use(express.json());
 
-const produtos = [];
+c;
+
+const produtos = [
+  {
+    nome: "",
+    descricao: "",
+    valor: 0,
+    quantidade: 0,
+  },
+];
 
 app.post("/produtos", (req, res) => {
-  produtos.push(req.body);
-  res.status(201).json(req.body);
+  const novoProd = req.body;
+
+  produtos.push(novoProd);
+  res.status(201).json(novoProd);
 });
 
 app.get("/produtos", (req, res) => {
