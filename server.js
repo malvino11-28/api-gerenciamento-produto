@@ -26,30 +26,33 @@ app.get("/produtos", (req, res) => {
 });
 
 app.put("/produtos/:id", (req, res) => {
-  const { id } = Number(req.params.id);
+  const { id } = parseInt(req.params.id);
   const { nome, descricao, valor, quantidade } = req.body;
 
   const busca = produtos.findIndex((p) => p.id === id);
 
-  if (!findIndex()) {
+  if (busca === -1) {
     res.status(404);
     return -1;
   }
   produtos[busca] = {
     id: id,
-    nome: nome || produtos[busca].nome,
-    descricao: descricao || produtos[busca].descricao,
-    valor: valor || produtos[busca].valor,
-    quantidade: quantidade || produtos[busca].quantidade,
+    nome: nome ?? produtos[busca].nome,
+    descricao: descricao ?? produtos[busca].descricao,
+    valor: typeof valor === "number" ? valor : (produtos[busca].valor ?? 0),
+    quantidade:
+      typeof quantidade === "number"
+        ? valor
+        : (produtos[busca].quantidade ?? 0),
   };
 
   res.status(200).json(produtos[busca]);
 });
 
 app.delete("/produtos/:id", (req, res) => {
-  const { id } = Number(req.params.id);
+  const { id } = parseInt(req.params.id);
   const busca = produtos.findIndex((p) => p.id === id);
-  if (!findIndex()) {
+  if (busca === -1) {
     res.status(404);
     return -1;
   }

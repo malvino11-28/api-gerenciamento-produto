@@ -1,5 +1,6 @@
 import * as validadores from "./validators.js";
 
+const form = document.getElementById("form");
 const valor = document.getElementById("valorProd");
 const quantidade = document.getElementById("qtdProd");
 
