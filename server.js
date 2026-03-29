@@ -23,37 +23,7 @@ app.post("/produtos", (req, res) => {
 });
 
 app.get("/produtos", (req, res) => {
-  let linhasTabela = produtos
-    .map(
-      (p) => `
-    <tr>
-      <td>${p.id}</td>
-      <td>${p.nome}</td>
-      <td>${p.descricao}</td>
-      <td>R$ ${p.valor}</td>
-      <td>${p.quantidade}</td>
-    </tr>
-  `,
-    )
-    .join("");
-
-  let html = `
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Descrição</th>
-          <th>Valor</th>
-          <th>Quantidade</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${linhasTabela}
-      </tbody>
-    </table>`;
-
-  res.status(200).send(html);
+  res.status(200).json(produtos);
 });
 
 app.put("/produtos/:id", (req, res) => {
@@ -63,7 +33,7 @@ app.put("/produtos/:id", (req, res) => {
   const busca = produtos.findIndex((p) => p.id === id);
 
   if (busca === -1) {
-    res.status(404);
+    res.status(404).send();
     return -1;
   }
   produtos[busca] = {
@@ -73,7 +43,7 @@ app.put("/produtos/:id", (req, res) => {
     valor: typeof valor === "number" ? valor : (produtos[busca].valor ?? 0),
     quantidade:
       typeof quantidade === "number"
-        ? valor
+        ? quantidade
         : (produtos[busca].quantidade ?? 0),
   };
 
@@ -81,7 +51,7 @@ app.put("/produtos/:id", (req, res) => {
 });
 
 app.delete("/produtos/:id", (req, res) => {
-  const { id } = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
   const busca = produtos.findIndex((p) => p.id === id);
   if (busca === -1) {
     res.status(404);
