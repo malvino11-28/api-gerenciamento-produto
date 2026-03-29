@@ -11,6 +11,10 @@ const produtos = [];
 
 app.post("/produtos", (req, res) => {
   const { nome, descricao, valor, quantidade } = req.body;
+
+  if (!nome || !descricao || valor === undefined || quantidade === undefined) {
+    return res.status(400).json({ erro: "Há campos vazios" });
+  }
   const novoProd = {
     id: id++,
     nome,
@@ -27,24 +31,34 @@ app.get("/produtos", (req, res) => {
 });
 
 app.put("/produtos/:id", (req, res) => {
-  const id = parseInt(req.params.id);
+  const idParam = parseInt(req.params.id);
   const { nome, descricao, valor, quantidade } = req.body;
 
-  const busca = produtos.findIndex((p) => p.id === id);
+  if (isNaN(idParam)) {
+    return res.status(400).json({ erro: "ID inválido." });
+  }
+
+  const busca = produtos.findIndex((p) => p.id === idParam);
 
   if (busca === -1) {
-    res.status(404).send();
-    return -1;
+    return res.status(404).json({ erro: "Produto não encontrado." });
+  }
+
+  const novoV = valor !== undefined ? Number(valor) : produtos[busca].valor;
+  const novaQTD =
+    quantidade !== undefined ? Number(quantidade) : produtos[busca].quantidade;
+
+  if (isNaN(novoV) || isNaN(novaQTD)) {
+    return res
+      .status(400)
+      .json({ erro: "Valor ou quantidade devem ser numéricos" });
   }
   produtos[busca] = {
-    id: id,
-    nome: nome ?? produtos[busca].nome,
-    descricao: descricao ?? produtos[busca].descricao,
-    valor: typeof valor === "number" ? valor : (produtos[busca].valor ?? 0),
-    quantidade:
-      typeof quantidade === "number"
-        ? quantidade
-        : (produtos[busca].quantidade ?? 0),
+    id: idParam,
+    nome: nome || produtos[busca].nome,
+    descricao: descricao || produtos[busca].descricao,
+    valor: novoV,
+    quantidade: novaQTD,
   };
 
   res.status(200).json(produtos[busca]);

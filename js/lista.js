@@ -1,4 +1,4 @@
-let tabela = document.querySelector("tBody");
+let tabela = document.querySelector("tbody");
 try {
   const res = await fetch("http://localhost:3000/produtos");
   if (res.ok) {
