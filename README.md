@@ -119,7 +119,7 @@ O projeto possui dois modos de execução:
 
 Link do deploy:
 
-[\[Acesse aqui\]](https://api-gerenciamento-produto.vercel.app/produtos)
+[\[Acesse aqui\]](https://api-gerenciamento-produto.vercel.app)
 
 Observação importante:
 
