@@ -1,6 +1,6 @@
 import * as msgs from "./ui.js";
 
-const form = document.querySelector("form");
+const form = document.getElementById("formD");
 const idInput = document.getElementById("id");
 
 form.addEventListener("submit", (event) => {

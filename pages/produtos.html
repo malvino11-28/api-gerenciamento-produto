@@ -18,12 +18,36 @@
       </thead>
       <tbody></tbody>
     </table>
-    <form>
+    <form id="formD">
       <h3>Digite um ID para excluir um produto</h3>
       <input type="number" id="id" />
       <button type="submit">EXCLUIR</button>
       <span id="msg" style="display: none">Informe um id</span>
     </form>
+
+    <form id="formP">
+      <h3>Alterar Produto</h3>
+
+      <!-- Campo para o ID (para saber QUAL produto alterar) -->
+      <label for="idPut">ID do Produto:</label>
+      <input type="number" id="idPut" placeholder="ID para alterar" />
+
+      <br /><br />
+
+      <!-- Novos campos para os dados que o servidor exige -->
+      <input type="text" id="namePut" placeholder="Novo Nome" />
+      <input type="text" id="descPut" placeholder="Nova Descrição" />
+      <input type="number" step="0.01" id="valorPut" placeholder="Novo Valor" />
+      <input type="number" id="qtdPut" placeholder="Nova Quantidade" />
+
+      <button type="submit">ATUALIZAR</button>
+
+      <span id="msgPut" style="display: none; color: red"
+        >Informe os dados corretamente</span
+      >
+    </form>
+
+    <script type="module" src="/js/atualiza.js"></script>
     <script type="module" src="/js/delete.js"></script>
     <script type="module" src="/js/lista.js"></script>
   </body>
