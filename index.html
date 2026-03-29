@@ -1,49 +1,103 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Cadastro de Produtos</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <div id="">
-      <h1>CADASTRO DE PRODUTOS</h1>
 
-      <form id="form">
-        <div>
-          <label for="produto">Nome do produto</label>
-          <input type="text" name="nome" id="produto" />
-          <small id="msgNom" style="display: none"
-            >O nome não pode estar vazio!</small
-          >
-        </div>
-        <div>
-          <label for="descricao">Descrição do produto</label>
-          <input type="text" name="descricao" id="descProd" />
-          <small id="msgDesc" style="display: none"
-            >A descrição não pode estar vazia!</small
-          >
-        </div>
-        <div>
-          <label for="valor">Valor do produto</label>
-          <input type="text" name="valor" id="valorProd" />
-          <small id="msgV" style="display: none">Digite um valor decimal</small>
-        </div>
-        <div>
-          <label for="qtd">Quantidade em estoque</label>
-          <input type="number" name="quantidade" id="qtdProd" />
-          <small id="msgQTD" style="display: none"
-            >Digite a quantidade com números inteiros</small
-          >
-        </div>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow-sm p-4">
+            <h2 class="text-center mb-4">Cadastro de Produtos</h2>
 
-        <div>
-          <button type="submit">CADASTRAR</button>
+            <form id="form">
+              <div class="mb-3">
+                <label for="produto" class="form-label">Nome do produto</label>
+                <input
+                  type="text"
+                  name="nome"
+                  id="produto"
+                  class="form-control"
+                />
+                <small id="msgNom" class="text-danger d-none">
+                  O nome não pode estar vazio!
+                </small>
+              </div>
+
+              <div class="mb-3">
+                <label for="descProd" class="form-label"
+                  >Descrição do produto</label
+                >
+                <input
+                  type="text"
+                  name="descricao"
+                  id="descProd"
+                  class="form-control"
+                />
+                <small id="msgDesc" class="text-danger d-none">
+                  A descrição não pode estar vazia!
+                </small>
+              </div>
+
+              <div class="mb-3">
+                <label for="valorProd" class="form-label"
+                  >Valor do produto</label
+                >
+                <input
+                  type="text"
+                  name="valor"
+                  id="valorProd"
+                  class="form-control"
+                />
+                <small id="msgV" class="text-danger d-none">
+                  Digite um valor decimal
+                </small>
+              </div>
+
+              <div class="mb-3">
+                <label for="qtdProd" class="form-label"
+                  >Quantidade em estoque</label
+                >
+                <input
+                  type="number"
+                  name="quantidade"
+                  id="qtdProd"
+                  class="form-control"
+                />
+                <small id="msgQTD" class="text-danger d-none">
+                  Digite a quantidade com números inteiros
+                </small>
+              </div>
+
+              <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+              </div>
+
+              <div class="text-center">
+                <a
+                  href="./pages/produtos.html"
+                  class="btn btn-outline-secondary btn-sm"
+                >
+                  Ver produtos
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
-      <a href="./pages/produtos.html">Ver produtos</a>
+      </div>
     </div>
-    <div id="div"></div>
+
+    <div id="div" class="text-center mt-3"></div>
+
     <script type="module" src="./js/script.js"></script>
   </body>
 </html>

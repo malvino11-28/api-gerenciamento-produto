@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import mysql from "mysql2/promise";
 import cors from "cors";
@@ -9,11 +11,19 @@ app.use(express.urlencoded({ extended: true }));
 let id = 1;
 
 const pool = mysql.createPool({
-  host: 1,
-  user: 1,
-  pas: 1,
-  d: 1,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
+try {
+  await pool.execute("SELECT 1");
+  console.log("✅ Conectado ao MySQL!");
+} catch (error) {
+  console.error("❌ Erro ao conectar no MySQL:", error);
+}
+
 const banco = process.env.USE_DB === "true";
 const produtos = [];
 
