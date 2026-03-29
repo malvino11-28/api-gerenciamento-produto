@@ -54,8 +54,7 @@ app.delete("/produtos/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const busca = produtos.findIndex((p) => p.id === id);
   if (busca === -1) {
-    res.status(404);
-    return -1;
+    return res.status(404).json({ erro: "Produto não encontrado" });
   }
   produtos.splice(busca, 1);
 
