@@ -26,9 +26,10 @@ try {
 
 const banco = process.env.USE_DB === "true";
 const produtos = [];
+const path = require("path");
 
 app.get("/", (req, res) => {
-  res.redirect("/produtos");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/produtos", async (req, res) => {
