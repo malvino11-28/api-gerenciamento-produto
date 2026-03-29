@@ -1,4 +1,5 @@
 import express from "express";
+import mysql from "mysql2/promise";
 import cors from "cors";
 
 const app = express();
@@ -7,72 +8,158 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 let id = 1;
 
+const pool = mysql.createPool({
+  host: 1,
+  user: 1,
+  pas: 1,
+  d: 1,
+});
+const banco = process.env.USE_DB === "true";
 const produtos = [];
 
-app.post("/produtos", (req, res) => {
-  const { nome, descricao, valor, quantidade } = req.body;
-
-  if (!nome || !descricao || valor === undefined || quantidade === undefined) {
-    return res.status(400).json({ erro: "Há campos vazios" });
+app.get("/produtos", async (req, res) => {
+  try {
+    if (!banco) {
+      return res.status(200).json(produtos);
+    }
+    const [rows] = await pool.execute("SELECT * from produtos");
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ erro: "Erro ao listar produtos" });
   }
-  const novoProd = {
-    id: id++,
-    nome,
-    descricao,
-    valor,
-    quantidade,
-  };
-  produtos.push(novoProd);
-  res.status(201).json(novoProd);
 });
 
-app.get("/produtos", (req, res) => {
-  res.status(200).json(produtos);
+app.post("/produtos", async (req, res) => {
+  try {
+    const { nome, descricao, valor, quantidade } = req.body;
+
+    if (
+      !nome ||
+      !descricao ||
+      valor === undefined ||
+      quantidade === undefined
+    ) {
+      return res.status(400).json({ erro: "Há campos vazios" });
+    }
+    if (!banco) {
+      const novoProd = {
+        id: id++,
+        nome,
+        descricao,
+        valor,
+        quantidade,
+      };
+      produtos.push(novoProd);
+      res.status(201).json(novoProd);
+    }
+    const [result] = await pool.execute(
+      "INSERT INTO produtos (nome, descricao, valor, quantidade) VALUES (?, ?, ?, ?)",
+      [nome, descricao, Number(valor), Number(quantidade)],
+    );
+
+    return res.status(201).json({
+      id: result.insertId,
+      nome,
+      descricao,
+      valor: Number(valor),
+      quantidade: Number(quantidade),
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ erro: "Erro ao cadastrar produto" });
+  }
 });
 
-app.put("/produtos/:id", (req, res) => {
-  const idParam = parseInt(req.params.id);
-  const { nome, descricao, valor, quantidade } = req.body;
+app.put("/produtos/:id", async (req, res) => {
+  try {
+    const idParam = parseInt(req.params.id);
+    const { nome, descricao, valor, quantidade } = req.body;
 
-  if (isNaN(idParam)) {
-    return res.status(400).json({ erro: "ID inválido." });
+    if (isNaN(idParam)) {
+      return res.status(400).json({ erro: "ID inválido." });
+    }
+
+    if (!banco) {
+      const busca = produtos.findIndex((p) => p.id === idParam);
+
+      if (busca === -1) {
+        return res.status(404).json({ erro: "Produto não encontrado." });
+      }
+
+      const novoV = valor !== undefined ? Number(valor) : produtos[busca].valor;
+      const novaQTD =
+        quantidade !== undefined
+          ? Number(quantidade)
+          : produtos[busca].quantidade;
+
+      if (isNaN(novoV) || isNaN(novaQTD)) {
+        return res
+          .status(400)
+          .json({ erro: "Valor ou quantidade devem ser numéricos" });
+      }
+      produtos[busca] = {
+        id: idParam,
+        nome: nome || produtos[busca].nome,
+        descricao: descricao || produtos[busca].descricao,
+        valor: novoV,
+        quantidade: novaQTD,
+      };
+
+      res.status(200).json(produtos[busca]);
+    }
+    const [result] = await pool.execute(
+      "UPDATE produtos SET nome = ?, descricao = ?, valor = ?, quantidade = ? WHERE id = ?",
+      [nome, descricao, Number(valor), Number(quantidade), idParam],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ erro: "Produto não encontrado. " });
+    }
+    return res.status(200).json({
+      if: idParam,
+      nome,
+      descricao,
+      valor: Number(valor),
+      quantidade: Number(quantidade),
+    });
+    // db
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ erro: "Erro ao atualizar produto" });
   }
-
-  const busca = produtos.findIndex((p) => p.id === idParam);
-
-  if (busca === -1) {
-    return res.status(404).json({ erro: "Produto não encontrado." });
-  }
-
-  const novoV = valor !== undefined ? Number(valor) : produtos[busca].valor;
-  const novaQTD =
-    quantidade !== undefined ? Number(quantidade) : produtos[busca].quantidade;
-
-  if (isNaN(novoV) || isNaN(novaQTD)) {
-    return res
-      .status(400)
-      .json({ erro: "Valor ou quantidade devem ser numéricos" });
-  }
-  produtos[busca] = {
-    id: idParam,
-    nome: nome || produtos[busca].nome,
-    descricao: descricao || produtos[busca].descricao,
-    valor: novoV,
-    quantidade: novaQTD,
-  };
-
-  res.status(200).json(produtos[busca]);
 });
 
-app.delete("/produtos/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const busca = produtos.findIndex((p) => p.id === id);
-  if (busca === -1) {
-    return res.status(404).json({ erro: "Produto não encontrado" });
-  }
-  produtos.splice(busca, 1);
+app.delete("/produtos/:id", async (req, res) => {
+  try {
+    const idParam = parseInt(req.params.id);
+    if (!banco) {
+      const busca = produtos.findIndex((p) => p.id === idParam);
 
-  res.status(204).send();
+      if (isNaN(idParam)) {
+        return res.status(400).json({ erro: "ID inválido." });
+      }
+
+      if (busca === -1) {
+        return res.status(404).json({ erro: "Produto não encontrado" });
+      }
+      produtos.splice(busca, 1);
+
+      res.status(204).send();
+    }
+    const [result] = await pool.execute("DELETE FROM produtos WHERE id = ?", [
+      idParam,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ erro: "Erro ao encontrar produto " });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ erro: "Erro ao deletar produto" });
+  }
 });
 
 app.listen(3000);
