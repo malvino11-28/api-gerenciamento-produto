@@ -27,6 +27,10 @@ try {
 const banco = process.env.USE_DB === "true";
 const produtos = [];
 
+app.get("/", (req, res) => {
+  res.redirect("/produtos");
+});
+
 app.get("/produtos", async (req, res) => {
   try {
     if (!banco) {
