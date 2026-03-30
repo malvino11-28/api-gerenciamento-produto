@@ -131,11 +131,15 @@ No ambiente de deploy (Vercel), o projeto funciona utilizando armazenamento em m
 
 Página de cadastro:
 
-[ADICIONAR IMAGEM AQUI]
+<img width="1878" height="964" alt="Opera Instantâneo_2026-03-30_131038_api-gerenciamento-produto vercel app" src="https://github.com/user-attachments/assets/c6275f1c-fe70-4439-89b6-51d635fc080a" />
+
+#
+
 
 Página de listagem:
 
-[ADICIONAR IMAGEM AQUI]
+<img width="1878" height="964" alt="Opera Instantâneo_2026-03-30_131208_api-gerenciamento-produto vercel app" src="https://github.com/user-attachments/assets/ab424603-d9f9-40e0-bf5f-3121ad28d8cf" />
+
 
 ---
 
