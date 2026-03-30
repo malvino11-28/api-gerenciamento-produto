@@ -36,7 +36,7 @@ const cadastrar = async () => {
   };
 
   try {
-    const res = await fetch("http://localhost:3000/produtos", {
+    const res = await fetch("/produtos", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(produto),

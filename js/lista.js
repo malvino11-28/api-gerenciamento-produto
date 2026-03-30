@@ -1,6 +1,6 @@
 let tabela = document.querySelector("tbody");
 try {
-  const res = await fetch("http://localhost:3000/produtos");
+  const res = await fetch("/produtos");
   if (res.ok) {
     const dados = await res.json();
 

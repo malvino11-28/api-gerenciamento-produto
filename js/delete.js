@@ -11,7 +11,7 @@ form.addEventListener("submit", (event) => {
     msgs.msgErro("msg");
   } else {
     msgs.limpMsg("msg");
-    fetch(`http://localhost:3000/produtos/${id}`, {
+    fetch(`/produtos/${id}`, {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
     })
